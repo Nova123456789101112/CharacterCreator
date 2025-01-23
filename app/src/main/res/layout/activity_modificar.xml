@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".crear"
+    android:orientation="vertical"
+    android:background="@color/violet">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apellido:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_apellido"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_fechanac"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:backgroundTint="@color/red"
+            android:hint="Fecha de nacimiento"
+            android:textColorHint="@color/red"
+            android:textColor="@color/red"
+            android:textSize="24sp"
+            android:focusableInTouchMode="false"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esta en una relacion"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <CheckBox
+                android:id="@+id/chbox_relacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/orange"
+                android:layout_gravity="center_vertical"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Especie:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_especie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nacionalidad:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_nacionalidad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupSexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            >
+
+            <RadioButton
+                android:id="@+id/radbtn_hombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+
+                />
+
+
+
+            <RadioButton
+                android:id="@+id/radbtn_mujer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                />
+
+            <RadioButton
+                android:id="@+id/radbtn_otro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hombre"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginEnd="10dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mujer"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Otro"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="20dp"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Afiliacion:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_afiliacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripcion:"
+                android:textColor="@color/orange"
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/et_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/orange"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/orange"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_guardar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/seagram"
+            android:text="Guardar cambios"
+            android:textColor="@color/violet"
+            android:textSize="28dp"
+            android:backgroundTint="@color/yellow"/>
+    </LinearLayout>
+
+</LinearLayout>

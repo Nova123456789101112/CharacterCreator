@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".registrarse"
+    android:orientation="vertical"
+    android:background="@color/orange">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/seagram"
+        android:text="Character"
+        android:textColor="@color/violet"
+        android:textSize="60sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+        android:text="creator"
+        android:fontFamily="@font/seagram"
+        android:textColor="@color/violet"
+        android:textSize="60sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:background="@color/red">
+
+            <EditText
+                android:id="@+id/et_user"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/violet"
+                android:textColorHint="@color/violet"
+                android:textStyle="bold"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/violet"
+                android:hint="      Usuario"
+
+                android:textSize="32sp"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/et_pass"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/violet"
+                android:textColorHint="@color/violet"
+                android:textStyle="bold"
+                android:paddingBottom="3dp"
+                android:backgroundTint="@color/violet"
+                android:hint="  Contraseña"
+                android:inputType="numberPassword"
+                android:textSize="32sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_registrarse"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="30dp"
+            android:text="Registrarse"
+            android:fontFamily="@font/seagram"
+            android:textColor="@color/yellow"
+            android:textSize="28dp"
+            android:backgroundTint="@color/violet"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
