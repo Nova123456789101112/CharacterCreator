@@ -3,7 +3,6 @@ package com.example.charactercreator;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import Global.info;
 import Global.userinfo;
 import POJO.user;
 
@@ -44,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
             if (!username.isEmpty() && !password.isEmpty()) {
                 realizarLogin(username, password);
                 user user = new user(username,password);
-                userinfo.lista.add(user);
-
+                userinfo.Usuario.setUsername(user.getUsername());
+                userinfo.Usuario.setPassword(user.getPassword());
             } else {
                 // Mostramos un mensaje si los campos están vacíos
                 Toast.makeText(MainActivity.this, "Por favor, ingrese usuario y contraseña", Toast.LENGTH_SHORT).show();

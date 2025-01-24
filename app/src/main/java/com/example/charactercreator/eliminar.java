@@ -36,6 +36,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
 import adaptadores.adaptadorver;
 
 
@@ -116,10 +129,122 @@ public class eliminar extends AppCompatActivity {
             for (int i = 0; i < info.listaelim.size(); i++) {
                 chara chara_elim = info.listaelim.get(i);
                 info.lista.remove(chara_elim);  // Eliminar de la lista local
+                new Thread(() -> {
+                    try {
+                        URL url = new URL("http://10.0.2.2/eliminar.php");
+
+                        // Crear la conexión
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                        conn.setDoOutput(true);
+
+                        // Datos a enviar
+                        JSONObject json = new JSONObject();
+                        json.put("id", chara_elim.getId());
+
+                        // Enviar los datos
+                        OutputStream os = null;
+
+                        os = conn.getOutputStream();
+                        os.write(json.toString().getBytes("UTF-8"));
+                        os.close();
+
+                        // Leer la respuesta
+                        int responseCode = conn.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                            StringBuilder sb = new StringBuilder();
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                sb.append(line);
+                            }
+                            reader.close();
+
+                            JSONObject responseJson = new JSONObject(sb.toString());
+                            String status = responseJson.getString("status");
+                            String message = responseJson.getString("message");
+
+                            runOnUiThread(() -> {
+                                if ("success".equals(status)) {
+                                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR){
+                            runOnUiThread(() -> Toast.makeText(this, "No se pudo conectar a la base de datos", Toast.LENGTH_SHORT).show());
+                        }
+
+                        conn.disconnect();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        runOnUiThread(() -> Toast.makeText(this, "Error de conexión: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
+                }).start();
             }
             info.listaelim.clear();  // Limpiar la lista de elementos eliminados
             rv.getAdapter().notifyDataSetChanged();  // Actualizar la vista del RecyclerView
             Toast.makeText(this, "Elementos eliminados", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        rv.removeAllViews();
+        poblarLista();
+    }
+
+    private void poblarLista() {
+        info.lista.clear();
+        new Thread(() -> {
+            try {
+                // URL del archivo PHP
+                URL url = new URL("http://10.0.2.2/galeria.php"); // Cambia por la URL de tu servidor
+
+                // Crear la conexión
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setDoOutput(true);
+
+                // Leer la respuesta
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    reader.close();
+
+                    JSONObject responseJson = new JSONObject(sb.toString());
+                    String status = responseJson.getString("status");
+                    String message = responseJson.getString("message");
+
+                    runOnUiThread(() -> {
+                        if ("success".equals(status)) {
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<chara>>() {}.getType();
+                            info.lista.addAll(gson.fromJson(message, listType));
+                            rv.getAdapter().notifyDataSetChanged();
+
+                        } else {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    runOnUiThread(() -> Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show());
+                }
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Error de conexión: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
 }

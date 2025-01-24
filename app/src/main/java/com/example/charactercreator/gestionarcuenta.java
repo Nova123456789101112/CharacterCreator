@@ -1,6 +1,6 @@
 package com.example.charactercreator;
 
-import static Global.userinfo.lista;
+import  static Global.userinfo.Usuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,9 +53,9 @@ public class gestionarcuenta extends AppCompatActivity {
         username = findViewById(R.id.tv_username);
         password = findViewById(R.id.et_password);
         btn_guardarCambios = findViewById(R.id.btn_guardarCambios);
-        username.setText("User: " + lista.get(0).getUsername());
-        password.setText("Contraseña: " + lista.get(0).getPassword());
-        btn_guardarCambios.setOnClickListener(v -> cambiarContrasena(lista.get(0).getUsername(),password.getText().toString().trim()));
+        username.setText("User: " + Usuario.getUsername());
+        //password.setText("Contraseña: " + lista.get(0).getPassword());
+        btn_guardarCambios.setOnClickListener(v -> cambiarContrasena(Usuario.getUsername(),password.getText().toString().trim()));
 
     }
 

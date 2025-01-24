@@ -68,6 +68,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 
 import Global.info;
@@ -121,7 +128,6 @@ public class modificar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 guardarDatos();
-                limpiarCampos();
             }
         });
 
@@ -145,48 +151,100 @@ public class modificar extends AppCompatActivity {
         etNombre.setText(chara.getNombre());
         etApellido.setText(chara.getApellido());
         etFechaNac.setText(chara.getFechaNacimiento());
-        chboxRelacion.setChecked(chara.isEstaEnUnaRelacion());
+        chboxRelacion.setChecked(chara.isEstaEnUnaRelacion() == 1);
         etEspecie.setText(chara.getEspecie());
         etNacionalidad.setText(chara.getNacionalidad());
         etAfiliacion.setText(chara.getAfiliacion());
-        etDescripcion.setText(chara.getDescripcionBreve());
+        etDescripcion.setText(chara.getDescripcion());
 
-        RadioButton selectedRadioButton = findViewById(chara.getSexo());
-        selectedRadioButton.toggle();
+        radioGroupSexo.check(radioGroupSexo.getChildAt(chara.getSexo()).getId());
     }
+
 
     private void guardarDatos() {
         // Obtener valores del formulario
         String nombre = etNombre.getText().toString();
         String apellido = etApellido.getText().toString();
         String fechaNacimiento = etFechaNac.getText().toString();
-        boolean estaEnRelacion = chboxRelacion.isChecked();
+        int estaEnRelacion = chboxRelacion.isChecked()?1:0;
         String especie = etEspecie.getText().toString();
         String nacionalidad = etNacionalidad.getText().toString();
         String afiliacion = etAfiliacion.getText().toString();
         String descripcion = etDescripcion.getText().toString();
 
         // Obtener sexo seleccionado
-        int sexo;
-        int selectedSexoId = radioGroupSexo.getCheckedRadioButtonId();
-        if (selectedSexoId != -1) {
-            sexo = selectedSexoId;
-        }
-
-        // Actualizar datos
-        chara.setNombre(nombre);
-        chara.setApellido(apellido);
-        chara.setFechaNacimiento(fechaNacimiento);
-        chara.setEstaEnUnaRelacion(estaEnRelacion);
-        chara.setEspecie(especie);
-        chara.setNacionalidad(nacionalidad);
-        chara.setAfiliacion(afiliacion);
-        chara.setDescripcionBreve(descripcion);
+        int sexo = radioGroupSexo.indexOfChild(radioGroupSexo.findViewById(radioGroupSexo.getCheckedRadioButtonId()));
 
         // Mostrar mensaje de confirmación
         Toast.makeText(this, "Datos guardados exitosamente", Toast.LENGTH_SHORT).show();
 
+        // (Opcional) Aquí podrías guardar el objeto chara en una base de datos o enviarlo a otra Activity
+        new Thread(() -> {
+            try {
+                URL url = new URL("http://10.0.2.2/modificar.php");
 
+                // Crear la conexión
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setDoOutput(true);
+
+                // Datos a enviar
+                JSONObject json = new JSONObject();
+                json.put("id", info.lista.get(pos).getId());
+                json.put("nombre", nombre);
+                json.put("apellido", apellido);
+                json.put("fechaNacimiento", fechaNacimiento);
+                json.put("estaEnRelacion", estaEnRelacion);
+                json.put("especie", especie);
+                json.put("nacionalidad", nacionalidad);
+                json.put("afiliacion", afiliacion);
+                json.put("descripcion", descripcion);
+                json.put("sexo", sexo);
+
+                // Enviar los datos
+                OutputStream os = null;
+
+                os = conn.getOutputStream();
+                os.write(json.toString().getBytes("UTF-8"));
+                os.close();
+
+                // Leer la respuesta
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    reader.close();
+
+                    JSONObject responseJson = new JSONObject(sb.toString());
+                    String status = responseJson.getString("status");
+                    String message = responseJson.getString("message");
+
+                    runOnUiThread(() -> {
+                        if ("success".equals(status)) {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                            limpiarCampos();
+                            finish();
+                        } else {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST){
+                    runOnUiThread(() -> Toast.makeText(this, "Faltan datos requeridos", Toast.LENGTH_SHORT).show());
+                } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR){
+                    runOnUiThread(() -> Toast.makeText(this, "No se pudo conectar a la base de datos", Toast.LENGTH_SHORT).show());
+                }
+
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Error de conexión: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
 
     private void onclick_fecha_nac() {

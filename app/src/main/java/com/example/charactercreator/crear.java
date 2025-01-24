@@ -24,6 +24,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 
 import Global.info;
@@ -65,15 +72,11 @@ public class crear extends AppCompatActivity {
         radioGroupSexo = findViewById(R.id.radioGroupSexo);
         btnGuardar = findViewById(R.id.btn_guardar);
 
-
-
-
         // Configurar el botón Guardar
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 guardarDatos();
-                limpiarCampos();
             }
         });
 
@@ -91,32 +94,84 @@ public class crear extends AppCompatActivity {
         String nombre = etNombre.getText().toString();
         String apellido = etApellido.getText().toString();
         String fechaNacimiento = etFechaNac.getText().toString();
-        boolean estaEnRelacion = chboxRelacion.isChecked();
+        int estaEnRelacion = chboxRelacion.isChecked()?1:0;
         String especie = etEspecie.getText().toString();
         String nacionalidad = etNacionalidad.getText().toString();
         String afiliacion = etAfiliacion.getText().toString();
         String descripcion = etDescripcion.getText().toString();
 
         // Obtener sexo seleccionado
-        int sexo = 0;
-        int selectedSexoId = radioGroupSexo.getCheckedRadioButtonId();
-        if (selectedSexoId != -1) {
-            /*
-            RadioButton selectedRadioButton = findViewById(selectedSexoId);
-            sexo = selectedRadioButton.getText().toString();
-            */
-            sexo = selectedSexoId;
-        }
+        int sexo = radioGroupSexo.indexOfChild(radioGroupSexo.findViewById(radioGroupSexo.getCheckedRadioButtonId()));
 
         // Crear objeto Chara
-        chara newchara = new chara(nombre, apellido, fechaNacimiento, estaEnRelacion, nacionalidad, especie, sexo, afiliacion, descripcion);
+        chara newchara = new chara(nombre, apellido, fechaNacimiento, estaEnRelacion, especie, nacionalidad, afiliacion, descripcion, sexo);
 
         info.lista.add(newchara);
 
-        // Mostrar mensaje de confirmación
-        Toast.makeText(this, "Datos guardados exitosamente", Toast.LENGTH_SHORT).show();
-
         // (Opcional) Aquí podrías guardar el objeto chara en una base de datos o enviarlo a otra Activity
+        new Thread(() -> {
+            try {
+                URL url = new URL("http://10.0.2.2/crear.php");
+
+                // Crear la conexión
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setDoOutput(true);
+
+                // Datos a enviar
+                JSONObject json = new JSONObject();
+                json.put("nombre", nombre);
+                json.put("apellido", apellido);
+                json.put("fechaNacimiento", fechaNacimiento);
+                json.put("estaEnRelacion", estaEnRelacion);
+                json.put("especie", especie);
+                json.put("nacionalidad", nacionalidad);
+                json.put("afiliacion", afiliacion);
+                json.put("descripcion", descripcion);
+                json.put("sexo", sexo);
+
+                // Enviar los datos
+                OutputStream os = null;
+
+                os = conn.getOutputStream();
+                os.write(json.toString().getBytes("UTF-8"));
+                os.close();
+
+                // Leer la respuesta
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    reader.close();
+                    JSONObject responseJson = new JSONObject(sb.toString());
+                    String status = responseJson.getString("status");
+                    String message = responseJson.getString("message");
+
+                    runOnUiThread(() -> {
+                        if ("success".equals(status)) {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                            limpiarCampos();
+                        } else {
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST){
+                    runOnUiThread(() -> Toast.makeText(this, "Faltan datos requeridos", Toast.LENGTH_SHORT).show());
+                } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR){
+                    runOnUiThread(() -> Toast.makeText(this, "No se pudo conectar a la base de datos", Toast.LENGTH_SHORT).show());
+                }
+
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Error de conexión: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
 
     private void onclick_fecha_nac() {

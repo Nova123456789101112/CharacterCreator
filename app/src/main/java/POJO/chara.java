@@ -3,31 +3,32 @@ package POJO;
 public class chara {
 
     // Variables de instancia
+    private int id;
     private String nombre;
     private String apellido;
     private String fechaNacimiento;
-    private boolean estaEnUnaRelacion;
-    private String nacionalidad;
+    private int estaEnRelacion;
     private String especie;
-    private int sexo;
+    private String nacionalidad;
     private String afiliacion;
-    private String descripcionBreve;
+    private String descripcion;
+    private int sexo;
 
     // Constructor vacío
     public chara() {
     }
 
     // Constructor con parámetros
-    public chara(String nombre, String apellido, String fechaNacimiento, boolean estaEnUnaRelacion, String nacionalidad, String especie, int sexo, String afiliacion, String descripcionBreve) {
+    public chara(String nombre, String apellido, String fechaNacimiento, int estaEnRelacion, String especie, String nacionalidad, String afiliacion, String descripcion, int sexo) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
-        this.estaEnUnaRelacion = estaEnUnaRelacion;
+        this.estaEnRelacion = estaEnRelacion;
         this.nacionalidad = nacionalidad;
         this.especie = especie;
         this.sexo = sexo;
         this.afiliacion = afiliacion;
-        this.descripcionBreve = descripcionBreve;
+        this.descripcion = descripcion;
     }
 
     // Getters y Setters
@@ -56,12 +57,12 @@ public class chara {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public boolean isEstaEnUnaRelacion() {
-        return estaEnUnaRelacion;
+    public int isEstaEnUnaRelacion() {
+        return estaEnRelacion;
     }
 
-    public void setEstaEnUnaRelacion(boolean estaEnUnaRelacion) {
-        this.estaEnUnaRelacion = estaEnUnaRelacion;
+    public void setEstaEnUnaRelacion(int estaEnUnaRelacion) {
+        this.estaEnRelacion = estaEnUnaRelacion;
     }
 
     public String getNacionalidad() {
@@ -96,11 +97,19 @@ public class chara {
         this.afiliacion = afiliacion;
     }
 
-    public String getDescripcionBreve() {
-        return descripcionBreve;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripcionBreve(String descripcionBreve) {
-        this.descripcionBreve = descripcionBreve;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
