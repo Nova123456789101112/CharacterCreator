@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import Global.info;
+import Global.userinfo;
 import POJO.chara;
 import adaptadores.adaptadoreliminar;
 import adaptadores.adaptadorver;
@@ -141,6 +142,7 @@ public class eliminar extends AppCompatActivity {
 
                         // Datos a enviar
                         JSONObject json = new JSONObject();
+                        json.put("idUsuario", userinfo.Usuario.getId());
                         json.put("id", chara_elim.getId());
 
                         // Enviar los datos
@@ -208,6 +210,16 @@ public class eliminar extends AppCompatActivity {
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 conn.setDoOutput(true);
+
+                JSONObject json = new JSONObject();
+                json.put("idUsuario", userinfo.Usuario.getId());
+
+                // Enviar los datos
+                OutputStream os = null;
+
+                os = conn.getOutputStream();
+                os.write(json.toString().getBytes("UTF-8"));
+                os.close();
 
                 // Leer la respuesta
                 int responseCode = conn.getResponseCode();

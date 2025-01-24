@@ -33,7 +33,7 @@ if ($resultado->num_rows > 0) {
   die(json_encode(array("status" => "error", "message" => "Usuario ya registrado")));
 }
 
-$sql = $conn->prepare("INSERT INTO usuarios(username,password) VALUES(?,?)");
+$sql = $conn->prepare("INSERT INTO `usuarios`(`id`, `username`, `password`) VALUES(NULL, ?,?)");
 $sql->bind_param("ss", $username,$password);
 $sql->execute();
 

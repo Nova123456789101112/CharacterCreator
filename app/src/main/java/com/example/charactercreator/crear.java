@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.Calendar;
 
 import Global.info;
+import Global.userinfo;
 import POJO.chara;
 
 public class crear extends AppCompatActivity {
@@ -121,6 +122,7 @@ public class crear extends AppCompatActivity {
 
                 // Datos a enviar
                 JSONObject json = new JSONObject();
+                json.put("idUsuario", userinfo.Usuario.getId());
                 json.put("nombre", nombre);
                 json.put("apellido", apellido);
                 json.put("fechaNacimiento", fechaNacimiento);

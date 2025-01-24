@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2025 at 12:22 AM
+-- Generation Time: Jan 24, 2025 at 04:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `chara` (
   `id` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
   `fechaNacimiento` varchar(30) NOT NULL,
@@ -67,7 +68,8 @@ INSERT INTO `usuarios` (`id`, `username`, `password`) VALUES
 -- Indexes for table `chara`
 --
 ALTER TABLE `chara`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`,`idUsuario`) USING BTREE,
+  ADD KEY `id_usuario` (`idUsuario`);
 
 --
 -- Indexes for table `usuarios`
@@ -84,13 +86,23 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `chara`
 --
 ALTER TABLE `chara`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `chara`
+--
+ALTER TABLE `chara`
+  ADD CONSTRAINT `id_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

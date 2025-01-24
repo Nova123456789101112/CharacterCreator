@@ -15,8 +15,8 @@ if ($conn->connect_error) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$sql = $conn->prepare("DELETE FROM chara WHERE `chara`.`id` = ?");
-$sql->bind_param("i", $data["id"]);
+$sql = $conn->prepare("DELETE FROM chara WHERE `chara`.`idUsuario` = ? AND `chara`.`id` = ?");
+$sql->bind_param("ii", $data["idUsuario"], $data["id"]);
 $sql->execute();
 
 echo json_encode(array("status" => "success", "message" => "Personaje eliminado exitosamente"));

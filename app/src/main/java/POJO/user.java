@@ -2,6 +2,7 @@ package POJO;
 
 public class user {
 
+    private int id;
     private String username;
     private String password;
 
@@ -33,5 +34,13 @@ public class user {
     // Setter para password
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

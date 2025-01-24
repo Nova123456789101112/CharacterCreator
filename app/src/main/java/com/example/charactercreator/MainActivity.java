@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         if ("success".equals(status)) {
-                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
+                            userinfo.Usuario.setId(Integer.parseInt(message));
                             // Navegar a la siguiente actividad
                             Intent intent = new Intent(MainActivity.this, crear.class);
                             startActivity(intent);

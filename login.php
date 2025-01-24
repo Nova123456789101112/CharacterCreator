@@ -23,7 +23,7 @@ if (!isset($data["username"]) || !isset($data["password"])) {
 $username = $data["username"];
 $password = $data["password"];
 
-$sql = $conn->prepare("SELECT password FROM usuarios WHERE username = ?");
+$sql = $conn->prepare("SELECT * FROM usuarios WHERE username = ?");
 $sql->bind_param("s", $username);
 $sql->execute();
 $resultado = $sql->get_result();
@@ -32,7 +32,7 @@ if ($resultado->num_rows > 0) {
   $row = $resultado->fetch_assoc();
   // **Replace password_verify with direct comparison (not recommended)**
   if ($password == $row["password"]) {
-    echo json_encode(array("status" => "success", "message" => "Login exitoso"));
+    echo json_encode(array("status" => "success", "message" => $row["id"]));
   } else {
     echo json_encode(array("status" => "error", "message" => "Usuario o contraseña incorrectos"));
   }

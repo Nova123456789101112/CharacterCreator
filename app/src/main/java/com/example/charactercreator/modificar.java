@@ -78,6 +78,7 @@ import java.net.URL;
 import java.util.Calendar;
 
 import Global.info;
+import Global.userinfo;
 import POJO.chara;
 
 public class modificar extends AppCompatActivity {
@@ -191,6 +192,7 @@ public class modificar extends AppCompatActivity {
 
                 // Datos a enviar
                 JSONObject json = new JSONObject();
+                json.put("idUsuario", userinfo.Usuario.getId());
                 json.put("id", info.lista.get(pos).getId());
                 json.put("nombre", nombre);
                 json.put("apellido", apellido);

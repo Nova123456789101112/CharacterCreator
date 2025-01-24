@@ -25,11 +25,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import Global.userinfo;
 import POJO.chara;
 import adaptadores.adaptadorver;
 import Global.info;
@@ -120,6 +122,16 @@ public class galeria extends AppCompatActivity {
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 conn.setDoOutput(true);
+
+                JSONObject json = new JSONObject();
+                json.put("idUsuario", userinfo.Usuario.getId());
+
+                // Enviar los datos
+                OutputStream os = null;
+
+                os = conn.getOutputStream();
+                os.write(json.toString().getBytes("UTF-8"));
+                os.close();
 
                 // Leer la respuesta
                 int responseCode = conn.getResponseCode();

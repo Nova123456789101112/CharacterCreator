@@ -15,8 +15,8 @@ if ($conn->connect_error) {
   die(json_encode(array("status" => "error", "message" => "No se pudo conectar a la base de datos")));
 }
 
-$sql = $conn->prepare("INSERT INTO `chara` (`nombre`, `apellido`, `fechaNacimiento`, `estaEnRelacion`, `especie`, `nacionalidad`, `afiliacion`, `descripcion`, `sexo`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$sql->bind_param("sssissssi", $data["nombre"], $data["apellido"], $data["fechaNacimiento"], $data["estaEnRelacion"], $data["especie"], $data["nacionalidad"], $data["afiliacion"], $data["descripcion"], $data["sexo"]);
+$sql = $conn->prepare("INSERT INTO `chara` (`idUsuario`,`nombre`, `apellido`, `fechaNacimiento`, `estaEnRelacion`, `especie`, `nacionalidad`, `afiliacion`, `descripcion`, `sexo`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$sql->bind_param("isssissssi", $data["idUsuario"], $data["nombre"], $data["apellido"], $data["fechaNacimiento"], $data["estaEnRelacion"], $data["especie"], $data["nacionalidad"], $data["afiliacion"], $data["descripcion"], $data["sexo"]);
 $sql->execute();
 
 
